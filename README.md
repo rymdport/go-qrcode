@@ -44,8 +44,11 @@ The maximum capacity of a QR Code varies according to the content encoded and th
 ## Borderless QR Codes
 
 To aid QR Code reading software, QR codes have a built in whitespace border.
-
-If you know what you're doing, and don't want a border, see https://gist.github.com/skip2/7e3d8a82f5317df9be437f8ec8ec0b7d for how to do it. It's still recommended you include a border manually.
+If you know what you're doing, and don't want a border, you can set the `.DisableBorder` field on the `QRCode` type.
+```go
+code, err := qrcode.New("https://example.org", qrcode.Medium)
+code.DisableBorder = true
+```
 
 ## Links
 
