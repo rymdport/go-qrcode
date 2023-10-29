@@ -1,0 +1,40 @@
+name: Analysis
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  static_analysis:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        persist-credentials: false
+    - uses: WillAbides/setup-go-faster@v1.10.1
+      with:
+        go-version: '1.21.x'
+        
+    - name: Install static analysis tools
+      run: |
+        go install github.com/securego/gosec/v2/cmd/gosec@v2.17.0
+        go install github.com/fzipp/gocyclo/cmd/gocyclo@v0.6.0
+        go install honnef.co/go/tools/cmd/staticcheck@v0.4.6
+        go install mvdan.cc/gofumpt@v0.5.0
+
+    - name: Vet
+      run: go vet ./...
+
+    - name: Gofumpt
+      run: test -z $(gofumpt -d -e . | tee /dev/stderr)
+
+    - name: Gocyclo
+      run: gocyclo -over 20 .
+
+    - name: Staticcheck
+      run: staticcheck ./...
+
+    - name: Gosec
+      run: gosec ./...
