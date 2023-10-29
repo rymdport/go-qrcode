@@ -3,9 +3,7 @@
 
 package reedsolomon
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestGFPolyAdd(t *testing.T) {
 	// a + b == result

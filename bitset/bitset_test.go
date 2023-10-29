@@ -4,7 +4,7 @@
 package bitset
 
 import (
-	rand "math/rand"
+	"math/rand"
 	"testing"
 )
 
