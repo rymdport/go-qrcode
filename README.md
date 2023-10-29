@@ -1,5 +1,8 @@
 <p align="center">
   <a href="https://pkg.go.dev/github.com/rymdport/go-qrcode" title="Go API Reference" rel="nofollow"><img src="https://img.shields.io/badge/go-documentation-blue.svg?style=flat" alt="Go API Reference"></a>
+  [![Go Report Card](https://goreportcard.com/badge/github.com/rymdport/go-qrcode)](https://goreportcard.com/report/github.com/rymdport/go-qrcode)
+  [![Analysis](https://github.com/rymdport/go-qrcode/actions/workflows/analysis.yml/badge.svg)](https://github.com/rymdport/go-qrcode/actions/workflows/analysis.yml)
+  [![Tests](https://github.com/rymdport/go-qrcode/actions/workflows/tests.yml/badge.svg)](https://github.com/rymdport/go-qrcode/actions/workflows/tests.yml)
 </p>
 
 # go-qrcode
