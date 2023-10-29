@@ -25,10 +25,11 @@ func TestExampleEncode(t *testing.T) {
 func TestExampleWriteFile(t *testing.T) {
 	filename := "example.png"
 	if err := WriteFile("https://example.org", Medium, 256, filename); err != nil {
-		if err = os.Remove(filename); err != nil {
-			t.Errorf("Error: %s", err.Error())
-		}
+		t.Errorf("Error: %s", err)
+		return
 	}
+
+	os.Remove(filename)
 }
 
 func TestExampleEncodeWithColourAndWithoutBorder(t *testing.T) {
@@ -50,4 +51,6 @@ func TestExampleEncodeWithColourAndWithoutBorder(t *testing.T) {
 		t.Errorf("Error: %s", err)
 		return
 	}
+
+	os.Remove("example2.png")
 }
