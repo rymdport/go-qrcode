@@ -24,6 +24,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"strings"
 )
 
 const (
@@ -42,7 +43,7 @@ type Bitset struct {
 
 // New returns an initialised Bitset with optional initial bits v.
 func New(v ...bool) *Bitset {
-	b := &Bitset{numBits: 0, bits: make([]byte, 0)}
+	b := &Bitset{}
 	b.AppendBools(v...)
 
 	return b
@@ -59,7 +60,7 @@ func (b *Bitset) Substr(start int, end int) *Bitset {
 		log.Panicf("Out of range start=%d end=%d numBits=%d", start, end, b.numBits)
 	}
 
-	result := New()
+	result := &Bitset{}
 	result.ensureCapacity(end - start)
 
 	for i := start; i < end; i++ {
@@ -79,7 +80,7 @@ func (b *Bitset) Substr(start int, end int) *Bitset {
 //
 // The function panics if the input string contains other characters.
 func NewFromBase2String(b2string string) *Bitset {
-	b := &Bitset{numBits: 0, bits: make([]byte, 0)}
+	b := &Bitset{}
 
 	for _, c := range b2string {
 		switch c {
@@ -191,20 +192,21 @@ func (b *Bitset) AppendNumBools(num int, value bool) {
 
 // String returns a human readable representation of the Bitset's contents.
 func (b *Bitset) String() string {
-	var bitString string
+	var bits strings.Builder
+	bits.Grow(b.numBits)
 	for i := 0; i < b.numBits; i++ {
 		if (i % 8) == 0 {
-			bitString += " "
+			bits.WriteByte(' ')
 		}
 
 		if (b.bits[i/8] & (0x80 >> byte(i%8))) != 0 {
-			bitString += "1"
+			bits.WriteByte('1')
 		} else {
-			bitString += "0"
+			bits.WriteByte('0')
 		}
 	}
 
-	return fmt.Sprintf("numBits=%d, bits=%s", b.numBits, bitString)
+	return fmt.Sprintf("numBits=%d, bits=%s", b.numBits, bits.String())
 }
 
 // Len returns the length of the Bitset in bits.
