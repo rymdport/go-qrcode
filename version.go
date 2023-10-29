@@ -63,7 +63,7 @@ type block struct {
 	numDataCodewords int
 }
 
-var versions = []qrCodeVersion{
+var versions = []*qrCodeVersion{
 	{
 		1,
 		Low,
@@ -2977,7 +2977,7 @@ func chooseQRCodeVersion(level RecoveryLevel, encoder *dataEncoder, numDataBits 
 		numFreeBits := v.numDataBits() - numDataBits
 
 		if numFreeBits >= 0 {
-			chosenVersion = &v
+			chosenVersion = v
 			break
 		}
 	}
@@ -3040,7 +3040,7 @@ func (v qrCodeVersion) quietZoneSize() int {
 func getQRCodeVersion(level RecoveryLevel, version int) *qrCodeVersion {
 	for _, v := range versions {
 		if v.level == level && v.version == version {
-			return &v
+			return v
 		}
 	}
 
