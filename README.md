@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://pkg.go.dev/github.com/rymdport/go-qrcode" title="Go API Reference" rel="nofollow"><img src="https://img.shields.io/badge/go-documentation-blue.svg?style=flat" alt="Go API Reference"></a>
+</p>
+
 # go-qrcode
 
 <img src='https://skip.org/img/nyancat-youtube-qr.png' align='right'>
@@ -16,22 +20,23 @@ import qrcode "github.com/skip2/go-qrcode"
 
 - **Create a 256x256 PNG image:**
 
-        var png []byte
-        png, err := qrcode.Encode("https://example.org", qrcode.Medium, 256)
+```go
+var png []byte
+png, err := qrcode.Encode("https://example.org", qrcode.Medium, 256)
+```
 
 - **Create a 256x256 PNG image and write to a file:**
 
-        err := qrcode.WriteFile("https://example.org", qrcode.Medium, 256, "qr.png")
+```go
+err := qrcode.WriteFile("https://example.org", qrcode.Medium, 256, "qr.png")
+```
 
 - **Create a 256x256 PNG image with custom colors and write to file:**
+```go
+err := qrcode.WriteColorFile("https://example.org", qrcode.Medium, 256, color.Black, color.White, "qr.png")
+```
 
-        err := qrcode.WriteColorFile("https://example.org", qrcode.Medium, 256, color.Black, color.White, "qr.png")
-
-All examples use the qrcode.Medium error Recovery Level and create a fixed 256x256px size QR Code. The last function creates a white on black instead of black on white QR Code.
-
-## Documentation
-
-[![godoc](https://godoc.org/github.com/skip2/go-qrcode?status.png)](https://godoc.org/github.com/skip2/go-qrcode)
+All examples use the `qrcode.Medium` error Recovery Level and create a fixed 256x256px size QR Code. The last function creates a white on black instead of black on white QR Code.
 
 ## Maximum capacity
 The maximum capacity of a QR Code varies according to the content encoded and the error recovery level. The maximum capacity is 2,953 bytes, 4,296 alphanumeric characters, 7,089 numeric digits, or a combination of these.
@@ -46,4 +51,3 @@ If you know what you're doing, and don't want a border, see https://gist.github.
 
 - [http://en.wikipedia.org/wiki/QR_code](http://en.wikipedia.org/wiki/QR_code)
 - [ISO/IEC 18004:2006](http://www.iso.org/iso/catalogue_detail.htm?csnumber=43655) - Main QR Code specification (approx CHF 198,00)<br>
-- [https://github.com/qpliu/qrencode-go/](https://github.com/qpliu/qrencode-go/) - alternative Go QR encoding library based on [ZXing](https://github.com/zxing/zxing)

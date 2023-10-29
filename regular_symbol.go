@@ -3,9 +3,7 @@
 
 package qrcode
 
-import (
-	bitset "github.com/skip2/go-qrcode/bitset"
-)
+import "github.com/rymdport/go-qrcode/bitset"
 
 type regularSymbol struct {
 	version qrCodeVersion
