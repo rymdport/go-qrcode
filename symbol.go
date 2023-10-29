@@ -20,7 +20,6 @@ package qrcode
 // For ease of implementation, the functions to set/get bits ignore the border,
 // so (0,0)=a, (0,1)=b, (1,0)=c, and (1,1)=d. The entire symbol (including the
 // border) is returned by bitmap().
-//
 type symbol struct {
 	// Value of module at [y][x]. True is set.
 	module [][]bool
@@ -114,27 +113,6 @@ func (m *symbol) bitmap() [][]bool {
 	}
 
 	return module
-}
-
-// string returns a pictorial representation of the symbol, suitable for
-// printing in a TTY.
-func (m *symbol) string() string {
-	var result string
-
-	for _, row := range m.module {
-		for _, value := range row {
-			switch value {
-			case true:
-				result += "  "
-			case false:
-				// Unicode 'FULL BLOCK' (U+2588).
-				result += "██"
-			}
-		}
-		result += "\n"
-	}
-
-	return result
 }
 
 // Constants used to weight penalty calculations. Specified by ISO/IEC

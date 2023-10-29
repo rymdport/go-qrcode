@@ -12,9 +12,6 @@ import (
 )
 
 func TestClassifyDataMode(t *testing.T) {
-	type Test struct {
-	}
-
 	tests := []struct {
 		data   []byte
 		actual []segment

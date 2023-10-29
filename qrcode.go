@@ -217,7 +217,7 @@ func NewWithForcedVersion(content string, version int, level RecoveryLevel) (*QR
 	case version >= 27 && version <= 40:
 		encoder = newDataEncoder(dataEncoderType27To40)
 	default:
-		return nil, fmt.Errorf("Invalid version %d (expected 1-40 inclusive)", version)
+		return nil, fmt.Errorf("invalid version %d (expected 1-40 inclusive)", version)
 	}
 
 	var encoded *bitset.Bitset
@@ -234,13 +234,13 @@ func NewWithForcedVersion(content string, version int, level RecoveryLevel) (*QR
 	}
 
 	if encoded.Len() > chosenVersion.numDataBits() {
-		return nil, fmt.Errorf("Cannot encode QR code: content too large for fixed size QR Code version %d (encoded length is %d bits, maximum length is %d bits)",
+		return nil, fmt.Errorf("cannot encode QR code: content too large for fixed size QR Code version %d (encoded length is %d bits, maximum length is %d bits)",
 			version,
 			encoded.Len(),
 			chosenVersion.numDataBits())
 	}
 
-	q := &QRCode{
+	return &QRCode{
 		Content: content,
 
 		Level:         level,
@@ -252,9 +252,7 @@ func NewWithForcedVersion(content string, version int, level RecoveryLevel) (*QR
 		encoder: encoder,
 		data:    encoded,
 		version: *chosenVersion,
-	}
-
-	return q, nil
+	}, nil
 }
 
 // Bitmap returns the QR Code as a 2D array of 1-bit pixels.
@@ -510,15 +508,6 @@ func (q *QRCode) encodeBlocks() *bitset.Bitset {
 	result.AppendNumBools(q.version.numRemainderBits, false)
 
 	return result
-}
-
-// max returns the maximum of a and b.
-func max(a int, b int) int {
-	if a > b {
-		return a
-	}
-
-	return b
 }
 
 // addPadding pads the encoded data upto the full length required.
