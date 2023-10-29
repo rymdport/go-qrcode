@@ -277,19 +277,16 @@ func (d *dataEncoder) optimiseDataModes() error {
 			}
 
 			coalescedLength, err := d.encodedLength(mode, numChars+nextNumChars)
-
 			if err != nil {
 				return err
 			}
 
 			seperateLength1, err := d.encodedLength(mode, numChars)
-
 			if err != nil {
 				return err
 			}
 
 			seperateLength2, err := d.encodedLength(nextMode, nextNumChars)
-
 			if err != nil {
 				return err
 			}
@@ -302,8 +299,10 @@ func (d *dataEncoder) optimiseDataModes() error {
 			}
 		}
 
-		optimised := segment{dataMode: mode,
-			data: make([]byte, 0, numChars)}
+		optimised := segment{
+			dataMode: mode,
+			data:     make([]byte, 0, numChars),
+		}
 
 		for k := i; k < j; k++ {
 			optimised.data = append(optimised.data, d.actual[k].data...)

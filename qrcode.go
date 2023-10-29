@@ -74,7 +74,6 @@ func Encode(content string, level RecoveryLevel, size int) ([]byte, error) {
 	var q *QRCode
 
 	q, err := New(content, level)
-
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +90,6 @@ func WriteFile(content string, level RecoveryLevel, size int, filename string) e
 	var q *QRCode
 
 	q, err := New(content, level)
-
 	if err != nil {
 		return err
 	}
@@ -106,8 +104,8 @@ func WriteFile(content string, level RecoveryLevel, size int, filename string) e
 // a larger image is silently written. Negative values for size cause a variable
 // sized image to be written: See the documentation for Image().
 func WriteColorFile(content string, level RecoveryLevel, size int, background,
-	foreground color.Color, filename string) error {
-
+	foreground color.Color, filename string,
+) error {
 	var q *QRCode
 
 	q, err := New(content, level)
@@ -153,8 +151,10 @@ type QRCode struct {
 //
 // An error occurs if the content is too long.
 func New(content string, level RecoveryLevel) (*QRCode, error) {
-	encoders := []dataEncoderType{dataEncoderType1To9, dataEncoderType10To26,
-		dataEncoderType27To40}
+	encoders := []dataEncoderType{
+		dataEncoderType1To9, dataEncoderType10To26,
+		dataEncoderType27To40,
+	}
 
 	var encoder *dataEncoder
 	var encoded *bitset.Bitset
@@ -221,7 +221,6 @@ func NewWithForcedVersion(content string, version int, level RecoveryLevel) (*QR
 
 	var encoded *bitset.Bitset
 	encoded, err := encoder.encode([]byte(content))
-
 	if err != nil {
 		return nil, err
 	}
@@ -340,7 +339,6 @@ func (q *QRCode) PNG(size int) ([]byte, error) {
 
 	var b bytes.Buffer
 	err := encoder.Encode(&b, img)
-
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +355,6 @@ func (q *QRCode) Write(size int, out io.Writer) error {
 	var png []byte
 
 	png, err := q.PNG(size)
-
 	if err != nil {
 		return err
 	}
@@ -374,12 +371,11 @@ func (q *QRCode) WriteFile(size int, filename string) error {
 	var png []byte
 
 	png, err := q.PNG(size)
-
 	if err != nil {
 		return err
 	}
 
-	return os.WriteFile(filename, png, os.FileMode(0644))
+	return os.WriteFile(filename, png, os.FileMode(0o644))
 }
 
 // encode completes the steps required to encode the QR Code. These include
@@ -414,7 +410,7 @@ func (q *QRCode) encode() {
 
 		p := s.penaltyScore()
 
-		//log.Printf("mask=%d p=%3d p1=%3d p2=%3d p3=%3d p4=%d\n", mask, p, s.penalty1(), s.penalty2(), s.penalty3(), s.penalty4())
+		// log.Printf("mask=%d p=%3d p1=%3d p2=%3d p3=%3d p4=%d\n", mask, p, s.penalty1(), s.penalty2(), s.penalty3(), s.penalty4())
 
 		if q.symbol == nil || p < penalty {
 			q.symbol = s

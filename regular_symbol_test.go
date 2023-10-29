@@ -25,7 +25,7 @@ func TestBuildRegularSymbol(t *testing.T) {
 			fmt.Println(err.Error())
 		} else {
 			_ = s
-			//fmt.Print(m.string())
+			// fmt.Print(m.string())
 		}
 	}
 }

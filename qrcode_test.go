@@ -38,7 +38,6 @@ func TestQRCodeMaxCapacity(t *testing.T) {
 
 	for _, test := range tests {
 		_, err := New(strings.Repeat(test.string, test.numRepetitions), Low)
-
 		if err != nil {
 			t.Errorf("%d x '%s' got %s expected success", test.numRepetitions,
 				test.string, err.Error())
@@ -145,7 +144,6 @@ func TestQRCodeVersionCapacity(t *testing.T) {
 func TestQRCodeISOAnnexIExample(t *testing.T) {
 	var q *QRCode
 	q, err := New("01234567", Medium)
-
 	if err != nil {
 		t.Fatalf("Error producing ISO Annex I Example: %s, expected success",
 			err.Error())

@@ -20,7 +20,7 @@ func TestGFMultiplicationIdentities(t *testing.T) {
 
 func TestGFMultiplicationAndDivision(t *testing.T) {
 	// a * b == result
-	var tests = []struct {
+	tests := []struct {
 		a      gfElement
 		b      gfElement
 		result gfElement

@@ -7,7 +7,7 @@ import "testing"
 
 func TestGFPolyAdd(t *testing.T) {
 	// a + b == result
-	var tests = []struct {
+	tests := []struct {
 		a      gfPoly
 		b      gfPoly
 		result gfPoly
@@ -45,7 +45,7 @@ func TestGFPolyAdd(t *testing.T) {
 
 func TestGFPolyequals(t *testing.T) {
 	// a == b if isEqual
-	var tests = []struct {
+	tests := []struct {
 		a       gfPoly
 		b       gfPoly
 		isEqual bool
@@ -84,7 +84,7 @@ func TestGFPolyequals(t *testing.T) {
 
 func TestGFPolyMultiply(t *testing.T) {
 	// a * b == result
-	var tests = []struct {
+	tests := []struct {
 		a      gfPoly
 		b      gfPoly
 		result gfPoly
@@ -121,7 +121,7 @@ func TestGFPolyMultiply(t *testing.T) {
 
 func TestGFPolyRemainder(t *testing.T) {
 	// numerator / denominator == quotient + remainder.
-	var tests = []struct {
+	tests := []struct {
 		numerator   gfPoly
 		denominator gfPoly
 		remainder   gfPoly
