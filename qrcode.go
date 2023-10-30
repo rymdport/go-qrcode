@@ -101,7 +101,8 @@ func WriteFile(content string, level RecoveryLevel, size int, filename string) e
 // a larger image is silently written. Negative values for size cause a variable
 // sized image to be written: See the documentation for Image().
 func WriteColorFile(content string, level RecoveryLevel, size int, background,
-	foreground color.Color, filename string) error {
+	foreground color.Color, filename string,
+) error {
 	qr, err := New(content, level)
 	if err != nil {
 		return err
