@@ -71,14 +71,12 @@ import (
 //
 // To serve over HTTP, remember to send a Content-Type: image/png header.
 func Encode(content string, level RecoveryLevel, size int) ([]byte, error) {
-	var q *QRCode
-
-	q, err := New(content, level)
+	qr, err := New(content, level)
 	if err != nil {
 		return nil, err
 	}
 
-	return q.PNG(size)
+	return qr.PNG(size)
 }
 
 // WriteFile encodes, then writes a QR Code to the given filename in PNG format.
@@ -87,14 +85,12 @@ func Encode(content string, level RecoveryLevel, size int) ([]byte, error) {
 // a larger image is silently written. Negative values for size cause a variable
 // sized image to be written: See the documentation for Image().
 func WriteFile(content string, level RecoveryLevel, size int, filename string) error {
-	var q *QRCode
-
-	q, err := New(content, level)
+	qr, err := New(content, level)
 	if err != nil {
 		return err
 	}
 
-	return q.WriteFile(size, filename)
+	return qr.WriteFile(size, filename)
 }
 
 // WriteColorFile encodes, then writes a QR Code to the given filename in PNG format.
@@ -104,20 +100,15 @@ func WriteFile(content string, level RecoveryLevel, size int, filename string) e
 // a larger image is silently written. Negative values for size cause a variable
 // sized image to be written: See the documentation for Image().
 func WriteColorFile(content string, level RecoveryLevel, size int, background,
-	foreground color.Color, filename string,
-) error {
-	var q *QRCode
-
-	q, err := New(content, level)
-
-	q.BackgroundColor = background
-	q.ForegroundColor = foreground
-
+	foreground color.Color, filename string) error {
+	qr, err := New(content, level)
 	if err != nil {
 		return err
 	}
 
-	return q.WriteFile(size, filename)
+	qr.BackgroundColor = background
+	qr.ForegroundColor = foreground
+	return qr.WriteFile(size, filename)
 }
 
 // A QRCode represents a valid encoded QRCode.
@@ -182,7 +173,7 @@ func New(content string, level RecoveryLevel) (*QRCode, error) {
 		return nil, errors.New("content too long to encode")
 	}
 
-	q := &QRCode{
+	return &QRCode{
 		Content: content,
 
 		Level:         level,
@@ -194,9 +185,7 @@ func New(content string, level RecoveryLevel) (*QRCode, error) {
 		encoder: encoder,
 		data:    encoded,
 		version: *chosenVersion,
-	}
-
-	return q, nil
+	}, nil
 }
 
 // NewWithForcedVersion constructs a QRCode of a specific version.
