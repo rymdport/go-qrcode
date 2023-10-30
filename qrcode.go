@@ -58,6 +58,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/rymdport/go-qrcode/bitset"
 	"github.com/rymdport/go-qrcode/reedsolomon"
@@ -527,55 +528,55 @@ func (q *QRCode) addPadding() {
 // ToString produces a multi-line string that forms a QR-code image.
 func (q *QRCode) ToString(inverseColor bool) string {
 	bits := q.Bitmap()
-	var buf bytes.Buffer
+	var builder strings.Builder
 	for y := range bits {
 		for x := range bits[y] {
 			if bits[y][x] != inverseColor {
-				buf.WriteString("  ")
+				builder.WriteString("  ")
 			} else {
-				buf.WriteString("██")
+				builder.WriteString("██")
 			}
 		}
-		buf.WriteString("\n")
+		builder.WriteString("\n")
 	}
-	return buf.String()
+	return builder.String()
 }
 
 // ToSmallString produces a multi-line string that forms a QR-code image, a
 // factor two smaller in x and y then ToString.
 func (q *QRCode) ToSmallString(inverseColor bool) string {
 	bits := q.Bitmap()
-	var buf bytes.Buffer
+	var builder strings.Builder
 	// if there is an odd number of rows, the last one needs special treatment
 	for y := 0; y < len(bits)-1; y += 2 {
 		for x := range bits[y] {
 			if bits[y][x] == bits[y+1][x] {
 				if bits[y][x] != inverseColor {
-					buf.WriteString(" ")
+					builder.WriteString(" ")
 				} else {
-					buf.WriteString("█")
+					builder.WriteString("█")
 				}
 			} else {
 				if bits[y][x] != inverseColor {
-					buf.WriteString("▄")
+					builder.WriteString("▄")
 				} else {
-					buf.WriteString("▀")
+					builder.WriteString("▀")
 				}
 			}
 		}
-		buf.WriteString("\n")
+		builder.WriteString("\n")
 	}
 	// special treatment for the last row if odd
 	if len(bits)%2 == 1 {
 		y := len(bits) - 1
 		for x := range bits[y] {
 			if bits[y][x] != inverseColor {
-				buf.WriteString(" ")
+				builder.WriteString(" ")
 			} else {
-				buf.WriteString("▀")
+				builder.WriteString("▀")
 			}
 		}
-		buf.WriteString("\n")
+		builder.WriteString("\n")
 	}
-	return buf.String()
+	return builder.String()
 }
