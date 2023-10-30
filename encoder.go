@@ -6,6 +6,7 @@ package qrcode
 import (
 	"errors"
 	"log"
+	"strings"
 
 	"github.com/rymdport/go-qrcode/bitset"
 )
@@ -85,7 +86,7 @@ type segment struct {
 	dataMode dataMode
 
 	// segment data (e.g. "abc").
-	data []byte
+	data string
 }
 
 // A dataEncoder encodes data for a particular QR Code version.
@@ -105,7 +106,7 @@ type dataEncoder struct {
 	numByteCharCountBits         int
 
 	// The raw input data.
-	data []byte
+	data string
 
 	// The data classified into unoptimised segments.
 	actual []segment
@@ -162,7 +163,7 @@ func newDataEncoder(t dataEncoderType) *dataEncoder {
 // encode data as one or more segments and return the encoded data.
 //
 // The returned data does not include the terminator bit sequence.
-func (d *dataEncoder) encode(data []byte) (*bitset.Bitset, error) {
+func (d *dataEncoder) encode(data string) (*bitset.Bitset, error) {
 	d.data = data
 	d.actual = nil
 	d.optimised = nil
@@ -299,15 +300,15 @@ func (d *dataEncoder) optimiseDataModes() error {
 			}
 		}
 
-		optimised := segment{
-			dataMode: mode,
-			data:     make([]byte, 0, numChars),
-		}
+		optimised := segment{dataMode: mode}
+		var builder strings.Builder
+		builder.Grow(numChars)
 
 		for k := i; k < j; k++ {
-			optimised.data = append(optimised.data, d.actual[k].data...)
+			builder.WriteString(d.actual[k].data)
 		}
 
+		optimised.data = builder.String()
 		d.optimised = append(d.optimised, optimised)
 
 		i = j
@@ -318,7 +319,7 @@ func (d *dataEncoder) optimiseDataModes() error {
 
 // encodeDataRaw encodes data in dataMode. The encoded data is appended to
 // encoded.
-func (d *dataEncoder) encodeDataRaw(data []byte, dataMode dataMode, encoded *bitset.Bitset) {
+func (d *dataEncoder) encodeDataRaw(data string, dataMode dataMode, encoded *bitset.Bitset) {
 	modeIndicator := d.modeIndicator(dataMode)
 	charCountBits := d.charCountBits(dataMode)
 
@@ -363,7 +364,7 @@ func (d *dataEncoder) encodeDataRaw(data []byte, dataMode dataMode, encoded *bit
 		}
 	case dataModeByte:
 		for _, b := range data {
-			encoded.AppendByte(b, 8)
+			encoded.AppendByte(byte(b), 8)
 		}
 	}
 }

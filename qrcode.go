@@ -155,7 +155,7 @@ func New(content string, level RecoveryLevel) (*QRCode, error) {
 
 	for _, t := range encoders {
 		encoder = newDataEncoder(t)
-		encoded, err = encoder.encode([]byte(content))
+		encoded, err = encoder.encode(content)
 
 		if err != nil {
 			continue
@@ -210,7 +210,7 @@ func NewWithForcedVersion(content string, version int, level RecoveryLevel) (*QR
 	}
 
 	var encoded *bitset.Bitset
-	encoded, err := encoder.encode([]byte(content))
+	encoded, err := encoder.encode(content)
 	if err != nil {
 		return nil, err
 	}

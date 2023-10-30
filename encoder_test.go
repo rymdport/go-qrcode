@@ -6,6 +6,7 @@ package qrcode
 import (
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/rymdport/go-qrcode/bitset"
@@ -13,36 +14,36 @@ import (
 
 func TestClassifyDataMode(t *testing.T) {
 	tests := []struct {
-		data   []byte
+		data   string
 		actual []segment
 	}{
 		{
-			[]byte{0x30},
+			"\x30",
 			[]segment{
 				{
 					dataModeNumeric,
-					[]byte{0x30},
+					"\x30",
 				},
 			},
 		},
 		{
-			[]byte{0x30, 0x41, 0x42, 0x43, 0x20, 0x00, 0xf0, 0xf1, 0xf2, 0x31},
+			"\x30\x41\x42\x43\x20\x00\xf0\xf1\xf2\x31",
 			[]segment{
 				{
 					dataModeNumeric,
-					[]byte{0x30},
+					"\x30",
 				},
 				{
 					dataModeAlphanumeric,
-					[]byte{0x41, 0x42, 0x43, 0x20},
+					"\x41\x42\x43\x20",
 				},
 				{
 					dataModeByte,
-					[]byte{0x00, 0xf0, 0xf1, 0xf2},
+					"\x00\xf0\xf1\xf2",
 				},
 				{
 					dataModeNumeric,
-					[]byte{0x31},
+					"\x31",
 				},
 			},
 		},
@@ -126,7 +127,7 @@ func TestSingleModeEncodings(t *testing.T) {
 		encoder := newDataEncoder(test.dataEncoderType)
 		encoded := bitset.New()
 
-		encoder.encodeDataRaw([]byte(test.data), test.dataMode, encoded)
+		encoder.encodeDataRaw(test.data, test.dataMode, encoded)
 
 		if !test.expected.Equals(encoded) {
 			t.Errorf("For %s got %s, expected %s", test.data, encoded.String(),
@@ -323,29 +324,27 @@ func TestOptimiseEncoding(t *testing.T) {
 			numTotalChars += v.numChars
 		}
 
-		data := make([]byte, numTotalChars)
+		var builder strings.Builder
+		builder.Grow(numTotalChars)
 
-		i := 0
 		for _, v := range test.actual {
 			for j := 0; j < v.numChars; j++ {
 				switch v.dataMode {
 				case dataModeNumeric:
-					data[i] = '1'
+					builder.WriteByte('1')
 				case dataModeAlphanumeric:
-					data[i] = 'A'
+					builder.WriteByte('A')
 				case dataModeByte:
-					data[i] = '#'
+					builder.WriteByte('#')
 				default:
 					t.Fatal("Unrecognised data mode")
 				}
-
-				i++
 			}
 		}
 
 		encoder := newDataEncoder(test.dataEncoderType)
 
-		_, err := encoder.encode(data)
+		_, err := encoder.encode(builder.String())
 
 		if err != nil {
 			t.Errorf("Got %s, expected valid encoding", err.Error())
