@@ -2825,17 +2825,11 @@ func chooseQRCodeVersion(level RecoveryLevel, encoder *dataEncoder, numDataBits 
 
 func (v qrCodeVersion) numTerminatorBitsRequired(numDataBits int) int {
 	numFreeBits := v.numDataBits() - numDataBits
-
-	var numTerminatorBits int
-
-	switch {
-	case numFreeBits >= 4:
-		numTerminatorBits = 4
-	default:
-		numTerminatorBits = numFreeBits
+	if numFreeBits >= 4 {
+		return 4
 	}
 
-	return numTerminatorBits
+	return numDataBits
 }
 
 // numBlocks returns the number of blocks.
