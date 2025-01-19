@@ -75,7 +75,6 @@ func TestDecodeBasic(t *testing.T) {
 		}
 
 		err = zbarimgCheck(q)
-
 		if err != nil {
 			t.Error(err.Error())
 		}
@@ -101,7 +100,6 @@ func TestDecodeAllVersionLevels(t *testing.T) {
 			}
 
 			err = zbarimgCheck(q)
-
 			if err != nil {
 				t.Errorf("Version=%d Level=%d, err=%s, expected success",
 					version,
@@ -131,7 +129,6 @@ func TestDecodeAllCharacters(t *testing.T) {
 	}
 
 	err = zbarimgCheck(q)
-
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -164,7 +161,6 @@ func TestDecodeFuzz(t *testing.T) {
 			}
 
 			err = zbarimgCheck(q)
-
 			if err != nil {
 				t.Error(err.Error())
 			}
@@ -204,7 +200,6 @@ func zbarimgDecode(q *QRCode) (string, error) {
 	cmd.Stdout = &out
 
 	err = cmd.Run()
-
 	if err != nil {
 		return "", err
 	}
@@ -224,7 +219,6 @@ func BenchmarkDecodeTest(b *testing.B) {
 		}
 
 		err = zbarimgCheck(q)
-
 		if err != nil {
 			b.Error(err.Error())
 		}

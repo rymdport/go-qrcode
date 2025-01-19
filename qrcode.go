@@ -157,7 +157,6 @@ func New(content string, level RecoveryLevel) (*QRCode, error) {
 	for _, t := range encoders {
 		encoder = newDataEncoder(t)
 		encoded, err = encoder.encode(content)
-
 		if err != nil {
 			continue
 		}
@@ -388,7 +387,6 @@ func (q *QRCode) encode() {
 		var err error
 
 		s, err = buildRegularSymbol(q.version, mask, encoded, !q.DisableBorder)
-
 		if err != nil {
 			log.Panic(err.Error())
 		}
