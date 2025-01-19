@@ -129,63 +129,27 @@ type QRCode struct {
 	DisableBorder bool
 
 	encoder *dataEncoder
-	version qrCodeVersion
+	version *qrCodeVersion
 
 	data   *bitset.Bitset
 	symbol *symbol
 	mask   int
 }
 
-// New constructs a QRCode.
+// New constructs a QRCode and selects a matching encoder from the content and level.
 //
 //	var q *qrcode.QRCode
 //	q, err := qrcode.New("my content", qrcode.Medium)
 //
 // An error occurs if the content is too long.
 func New(content string, level RecoveryLevel) (*QRCode, error) {
-	encoders := []dataEncoderType{
-		dataEncoderType1To9, dataEncoderType10To26,
-		dataEncoderType27To40,
-	}
-
-	var encoder *dataEncoder
-	var encoded *bitset.Bitset
-	var chosenVersion *qrCodeVersion
-	var err error
-
-	for _, t := range encoders {
-		encoder = newDataEncoder(t)
-		encoded, err = encoder.encode(content)
-		if err != nil {
-			continue
-		}
-
-		chosenVersion = chooseQRCodeVersion(level, encoder, encoded.Len())
-
-		if chosenVersion != nil {
-			break
-		}
-	}
-
+	code := &QRCode{Content: content, Level: level, ForegroundColor: color.Black, BackgroundColor: color.White}
+	err := code.new()
 	if err != nil {
 		return nil, err
-	} else if chosenVersion == nil {
-		return nil, errors.New("content too long to encode")
 	}
 
-	return &QRCode{
-		Content: content,
-
-		Level:         level,
-		VersionNumber: chosenVersion.version,
-
-		ForegroundColor: color.Black,
-		BackgroundColor: color.White,
-
-		encoder: encoder,
-		data:    encoded,
-		version: *chosenVersion,
-	}, nil
+	return code, nil
 }
 
 // NewWithForcedVersion constructs a QRCode of a specific version.
@@ -238,7 +202,7 @@ func NewWithForcedVersion(content string, version int, level RecoveryLevel) (*QR
 
 		encoder: encoder,
 		data:    encoded,
-		version: *chosenVersion,
+		version: chosenVersion,
 	}, nil
 }
 
@@ -365,6 +329,37 @@ func (q *QRCode) WriteFile(size int, filename string) error {
 	}
 
 	return os.WriteFile(filename, png, os.FileMode(0o644))
+}
+
+func (q *QRCode) new() error {
+	encoders := []dataEncoderType{
+		dataEncoderType1To9, dataEncoderType10To26,
+		dataEncoderType27To40,
+	}
+
+	var err error
+
+	for _, t := range encoders {
+		q.encoder = newDataEncoder(t)
+		q.data, err = q.encoder.encode(q.Content)
+		if err != nil {
+			continue
+		}
+
+		q.version = chooseQRCodeVersion(q.Level, q.encoder, q.data.Len())
+		if q.version != nil {
+			break
+		}
+	}
+
+	if err != nil {
+		return err
+	} else if q.version == nil {
+		return errors.New("content too long to encode")
+	}
+
+	q.VersionNumber = q.version.version
+	return nil
 }
 
 // encode completes the steps required to encode the QR Code. These include

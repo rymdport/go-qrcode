@@ -6,7 +6,7 @@ package qrcode
 import "github.com/rymdport/go-qrcode/bitset"
 
 type regularSymbol struct {
-	version qrCodeVersion
+	version *qrCodeVersion
 	mask    int
 
 	data *bitset.Bitset
@@ -102,7 +102,7 @@ var (
 
 const finderPatternSize = 7
 
-func buildRegularSymbol(version qrCodeVersion, mask int,
+func buildRegularSymbol(version *qrCodeVersion, mask int,
 	data *bitset.Bitset, includeQuietZone bool,
 ) (*symbol, error) {
 	quietZoneSize := 0
