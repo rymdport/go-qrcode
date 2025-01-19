@@ -5,7 +5,6 @@ package qrcode
 
 import (
 	"errors"
-	"log"
 	"strings"
 
 	"github.com/rymdport/go-qrcode/bitset"
@@ -154,7 +153,7 @@ func newDataEncoder(t dataEncoderType) *dataEncoder {
 			numByteCharCountBits:         16,
 		}
 	default:
-		log.Panic("Unknown dataEncoderType")
+		panic("Unknown dataEncoderType")
 	}
 
 	return d
@@ -379,10 +378,8 @@ func (d *dataEncoder) modeIndicator(dataMode dataMode) *bitset.Bitset {
 	case dataModeByte:
 		return d.byteModeIndicator
 	default:
-		log.Panic("Unknown data mode")
+		panic("Unknown data mode")
 	}
-
-	return nil
 }
 
 // charCountBits returns the number of bits used to encode the length of a data
@@ -396,10 +393,8 @@ func (d *dataEncoder) charCountBits(dataMode dataMode) int {
 	case dataModeByte:
 		return d.numByteCharCountBits
 	default:
-		log.Panic("Unknown data mode")
+		panic("Unknown data mode")
 	}
-
-	return 0
 }
 
 // encodedLength returns the number of bits required to encode n symbols in
@@ -479,8 +474,6 @@ func encodeAlphanumericCharacter(v byte) uint32 {
 	case c == ':':
 		return 44
 	default:
-		log.Panicf("encodeAlphanumericCharacter() with non alphanumeric char %v.", v)
+		panic("encodeAlphanumericCharacter() with non alphanumeric char: " + string(v))
 	}
-
-	return 0
 }

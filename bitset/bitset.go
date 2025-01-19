@@ -23,7 +23,6 @@ package bitset
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"strings"
 )
 
@@ -57,7 +56,7 @@ func Clone(from *Bitset) *Bitset {
 // Substr returns a substring, consisting of the bits from indexes start to end.
 func (b *Bitset) Substr(start int, end int) *Bitset {
 	if start > end || end > b.numBits {
-		log.Panicf("Out of range start=%d end=%d numBits=%d", start, end, b.numBits)
+		panic(fmt.Sprintf("Out of range start=%d end=%d numBits=%d", start, end, b.numBits))
 	}
 
 	result := &Bitset{}
@@ -69,7 +68,6 @@ func (b *Bitset) Substr(start int, end int) *Bitset {
 		}
 		result.numBits++
 	}
-
 	return result
 }
 
@@ -90,7 +88,7 @@ func NewFromBase2String(b2string string) *Bitset {
 			b.AppendBools(false)
 		case ' ':
 		default:
-			log.Panicf("Invalid char %c in NewFromBase2String", c)
+			panic(fmt.Sprintf("Invalid char %c in NewFromBase2String", c))
 		}
 	}
 
@@ -109,7 +107,7 @@ func (b *Bitset) AppendByte(value byte, numBits int) {
 	b.ensureCapacity(numBits)
 
 	if numBits > 8 {
-		log.Panicf("numBits %d out of range 0-8", numBits)
+		panic(fmt.Sprintf("numBits %d out of range 0-8", numBits))
 	}
 
 	for i := numBits - 1; i >= 0; i-- {
@@ -126,7 +124,7 @@ func (b *Bitset) AppendUint32(value uint32, numBits int) {
 	b.ensureCapacity(numBits)
 
 	if numBits > 32 {
-		log.Panicf("numBits %d out of range 0-32", numBits)
+		panic(fmt.Sprintf("numBits %d out of range 0-32", numBits))
 	}
 
 	for i := numBits - 1; i >= 0; i-- {
@@ -229,7 +227,7 @@ func (b *Bitset) Bits() []bool {
 // At returns the value of the bit at |index|.
 func (b *Bitset) At(index int) bool {
 	if index >= b.numBits {
-		log.Panicf("Index %d out of range", index)
+		panic(fmt.Sprintf("Index %d out of range", index))
 	}
 
 	return (b.bits[index/8] & (0x80 >> byte(index%8))) != 0
@@ -260,7 +258,7 @@ func (b *Bitset) Equals(other *Bitset) bool {
 // ByteAt returns a byte consisting of upto 8 bits starting at index.
 func (b *Bitset) ByteAt(index int) byte {
 	if index < 0 || index >= b.numBits {
-		log.Panicf("Index %d out of range", index)
+		panic(fmt.Sprintf("Index %d out of range", index))
 	}
 
 	var result byte

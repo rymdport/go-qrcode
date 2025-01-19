@@ -56,7 +56,6 @@ import (
 	"image/color"
 	"image/png"
 	"io"
-	"log"
 	"os"
 	"strings"
 
@@ -388,13 +387,13 @@ func (q *QRCode) encode() {
 
 		s, err = buildRegularSymbol(q.version, mask, encoded, !q.DisableBorder)
 		if err != nil {
-			log.Panic(err.Error())
+			panic(err.Error())
 		}
 
 		numEmptyModules := s.numEmptyModules()
 		if numEmptyModules != 0 {
-			log.Panicf("bug: numEmptyModules is %d (expected 0) (version=%d)",
-				numEmptyModules, q.VersionNumber)
+			panic(fmt.Sprintf("bug: numEmptyModules is %d (expected 0) (version=%d)",
+				numEmptyModules, q.VersionNumber))
 		}
 
 		p := s.penaltyScore()
@@ -520,7 +519,7 @@ func (q *QRCode) addPadding() {
 	}
 
 	if q.data.Len() != numDataBits {
-		log.Panicf("BUG: got len %d, expected %d", q.data.Len(), numDataBits)
+		panic(fmt.Sprintf("BUG: got len %d, expected %d", q.data.Len(), numDataBits))
 	}
 }
 
