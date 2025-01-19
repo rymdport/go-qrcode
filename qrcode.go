@@ -299,6 +299,14 @@ func (q *QRCode) PNG(size int) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
+// SetContent sets up the qrcode to be reused with new content and level.
+// This behaves the same as creating a new qr code with .New().
+func (q *QRCode) SetContent(content string, level RecoveryLevel) error {
+	q.Content = content
+	q.Level = level
+	return q.new()
+}
+
 // Write writes the QR Code as a PNG image to io.Writer.
 //
 // size is both the image width and height in pixels. If size is too small then
