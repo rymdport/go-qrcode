@@ -22,7 +22,7 @@ const (
 )
 
 var (
-	alignmentPatternCenter = [][]int{
+	alignmentPatternCenter = [...][]int{
 		{}, // Version 0 doesn't exist.
 		{}, // Version 1 doesn't use alignment patterns.
 		{6, 18},
@@ -76,8 +76,6 @@ var (
 		{b1, b1, b1, b1, b1, b1, b1},
 	}
 
-	finderPatternSize = 7
-
 	finderPatternHorizontalBorder = [][]bool{
 		{b0, b0, b0, b0, b0, b0, b0, b0},
 	}
@@ -101,6 +99,8 @@ var (
 		{b1, b1, b1, b1, b1},
 	}
 )
+
+const finderPatternSize = 7
 
 func buildRegularSymbol(version qrCodeVersion, mask int,
 	data *bitset.Bitset, includeQuietZone bool,

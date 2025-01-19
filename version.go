@@ -61,7 +61,7 @@ type block struct {
 	numDataCodewords int
 }
 
-var versions = []*qrCodeVersion{
+var versions = [...]*qrCodeVersion{
 	{
 		1,
 		Low,
@@ -2640,7 +2640,7 @@ var (
 	//
 	// 01 | 001 = 01001 = 0x9
 	// formatBitSequence[0x9].qrCode = 0x72f3 = 111001011110011
-	formatBitSequence = []struct {
+	formatBitSequence = [...]struct {
 		regular uint32
 		micro   uint32
 	}{
@@ -2686,7 +2686,7 @@ var (
 	//
 	// For example, a QR code of version 7:
 	// versionBitSequence[0x7] = 0x07c94 = 000111110010010100
-	versionBitSequence = []uint32{
+	versionBitSequence = [...]uint32{
 		0x00000,
 		0x00000,
 		0x00000,
