@@ -16,7 +16,7 @@ Each QR Code contains error recovery information to aid reading damaged or obscu
 ## Usage
 
 ```go
-import qrcode "github.com/skip2/go-qrcode"
+import qrcode "github.com/rymdport/go-qrcode"
 ```
 
 - **Create a 256x256 PNG image:**
