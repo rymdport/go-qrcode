@@ -340,7 +340,7 @@ func (q *QRCode) WriteFile(size int, filename string) error {
 }
 
 func (q *QRCode) new() error {
-	encoders := []dataEncoderType{
+	encoders := [...]dataEncoderType{
 		dataEncoderType1To9, dataEncoderType10To26,
 		dataEncoderType27To40,
 	}
