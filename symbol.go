@@ -61,9 +61,8 @@ func newSymbol(size int, quietZoneSize int) *symbol {
 }
 
 // get returns the module value at (x, y).
-func (m *symbol) get(x int, y int) (v bool) {
-	v = m.module[y+m.quietZoneSize][x+m.quietZoneSize]
-	return
+func (m *symbol) get(x int, y int) bool {
+	return m.module[y+m.quietZoneSize][x+m.quietZoneSize]
 }
 
 // empty returns true if the module at (x, y) has not been set (to either true
