@@ -144,11 +144,11 @@ func TestDecodeFuzz(t *testing.T) {
 	const iterations int = 32
 	const maxLength int = 128
 
-	for i := 0; i < iterations; i++ {
+	for range iterations {
 		len := r.Intn(maxLength-1) + 1
 
 		var content string
-		for j := 0; j < len; j++ {
+		for range len {
 			// zbarimg seems to have trouble with special characters, test printable
 			// characters only for now.
 			content += string(byte(32 + r.Intn(94)))
@@ -212,7 +212,7 @@ func BenchmarkDecodeTest(b *testing.B) {
 		b.Skip("Decode benchmarks not enabled")
 	}
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		q, err := New("content", Medium)
 		if err != nil {
 			b.Error(err.Error())

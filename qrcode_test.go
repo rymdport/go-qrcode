@@ -160,13 +160,13 @@ func TestQRCodeISOAnnexIExample(t *testing.T) {
 }
 
 func BenchmarkQRCodeURLSize(b *testing.B) {
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		New("http://www.example.org", Medium)
 	}
 }
 
 func BenchmarkQRCodeMaximumSize(b *testing.B) {
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		// 7089 is the maximum encodable number of numeric digits.
 		New(strings.Repeat("0", 7089), Low)
 	}

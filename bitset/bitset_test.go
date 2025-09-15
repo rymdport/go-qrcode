@@ -33,7 +33,7 @@ func TestAppend(t *testing.T) {
 
 	rng := rand.New(rand.NewSource(1))
 
-	for i := 0; i < len(randomBools); i++ {
+	for i := range randomBools {
 		randomBools[i] = rng.Intn(2) == 1
 	}
 
@@ -154,7 +154,7 @@ func TestAppendBools(t *testing.T) {
 
 	rng := rand.New(rand.NewSource(1))
 
-	for i := 0; i < len(randomBools); i++ {
+	for i := range randomBools {
 		randomBools[i] = rng.Intn(2) == 1
 	}
 
@@ -171,7 +171,7 @@ func TestAppendBools(t *testing.T) {
 func BenchmarkShortAppend(b *testing.B) {
 	bitset := New()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		bitset.AppendBools(b0, b1, b0, b1, b0, b1, b0)
 	}
 }
@@ -181,7 +181,7 @@ func TestLen(t *testing.T) {
 
 	rng := rand.New(rand.NewSource(1))
 
-	for i := 0; i < len(randomBools); i++ {
+	for i := range randomBools {
 		randomBools[i] = rng.Intn(2) == 1
 	}
 
@@ -212,7 +212,7 @@ func equal(a []bool, b []bool) bool {
 		return false
 	}
 
-	for i := 0; i < len(a); i++ {
+	for i := range a {
 		if a[i] != b[i] {
 			return false
 		}

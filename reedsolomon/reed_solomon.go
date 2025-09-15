@@ -62,7 +62,7 @@ func rsGeneratorPoly(degree int) gfPoly {
 
 	generator := gfPoly{term: []gfElement{1}}
 
-	for i := 0; i < degree; i++ {
+	for i := range degree {
 		nextPoly := gfPoly{term: []gfElement{gfExpTable[i], 1}}
 		generator = gfPolyMultiply(generator, nextPoly)
 	}

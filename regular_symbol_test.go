@@ -15,7 +15,7 @@ func TestBuildRegularSymbol(t *testing.T) {
 		v := getQRCodeVersion(Low, 1)
 
 		data := bitset.New()
-		for i := 0; i < 26; i++ {
+		for range 26 {
 			data.AppendNumBools(8, false)
 		}
 

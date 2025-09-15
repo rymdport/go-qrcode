@@ -6,7 +6,7 @@ package reedsolomon
 import "testing"
 
 func TestGFMultiplicationIdentities(t *testing.T) {
-	for i := 0; i < 256; i++ {
+	for i := range 256 {
 		value := gfElement(i)
 		if gfMultiply(gfZero, value) != gfZero {
 			t.Errorf("0 . %d != 0", value)

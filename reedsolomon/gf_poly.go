@@ -75,8 +75,8 @@ func gfPolyMultiply(a, b gfPoly) gfPoly {
 
 	result := gfPoly{term: make([]gfElement, numATerms+numBTerms)}
 
-	for i := 0; i < numATerms; i++ {
-		for j := 0; j < numBTerms; j++ {
+	for i := range numATerms {
+		for j := range numBTerms {
 			if a.term[i] != 0 && b.term[j] != 0 {
 				monomial := gfPoly{term: make([]gfElement, i+j+1)}
 				monomial.term[i+j] = gfMultiply(a.term[i], b.term[j])
@@ -116,10 +116,7 @@ func gfPolyAdd(a, b gfPoly) gfPoly {
 	numATerms := a.numTerms()
 	numBTerms := b.numTerms()
 
-	numTerms := numATerms
-	if numBTerms > numTerms {
-		numTerms = numBTerms
-	}
+	numTerms := max(numBTerms, numATerms)
 
 	result := gfPoly{term: make([]gfElement, numTerms)}
 
@@ -199,7 +196,7 @@ func (e gfPoly) equals(other gfPoly) bool {
 	numMinTerms := minecPoly.numTerms()
 	numMaxTerms := maxecPoly.numTerms()
 
-	for i := 0; i < numMinTerms; i++ {
+	for i := range numMinTerms {
 		if e.term[i] != other.term[i] {
 			return false
 		}

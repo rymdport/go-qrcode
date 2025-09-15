@@ -183,7 +183,7 @@ func (b *Bitset) AppendBools(bits ...bool) {
 
 // AppendNumBools appends num bits of value value.
 func (b *Bitset) AppendNumBools(num int, value bool) {
-	for i := 0; i < num; i++ {
+	for range num {
 		b.AppendBools(value)
 	}
 }

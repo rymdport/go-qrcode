@@ -15,8 +15,8 @@ func TestSymbolBasic(t *testing.T) {
 		t.Errorf("Symbol size is %d, expected %d", m.size, size+quietZoneSize*2)
 	}
 
-	for i := 0; i < size; i++ {
-		for j := 0; j < size; j++ {
+	for i := range size {
+		for j := range size {
 
 			v := m.get(i, j)
 

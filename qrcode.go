@@ -384,7 +384,7 @@ func (q *QRCode) encode() {
 	const numMasks int = 8
 	penalty := 0
 
-	for mask := 0; mask < numMasks; mask++ {
+	for mask := range numMasks {
 		var s *symbol
 		var err error
 
